@@ -1,0 +1,124 @@
+.chat-area {
+  position: relative;
+  height: 100%;
+
+  .conversation-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    padding: 10px 15px;
+    height: calc(100vh - 70px - 70px);
+    .conversation {
+      width: 100%;
+      overflow: auto;
+      scroll-behavior: smooth;
+      max-height: 100%;
+
+      .message-row {
+        display: flex;
+        .message {
+          max-width: 350px;
+          padding: 6px 52px 5px 10px;
+          border-radius: 10px;
+          margin: 5px;
+          font-size: 18px;
+          position: relative;
+          span.time,
+          .sender-info {
+            font-size: 10px;
+            position: absolute;
+            right: 7px;
+            bottom: 5px;
+            color: #c0c0c0;
+            display: flex;
+            align-items: center;
+            height: 15px;
+            .delivered-status {
+              svg {
+                width: 14px;
+              }
+            }
+          }
+        }
+        &.reciever {
+          justify-content: flex-start;
+          .message {
+            background: #262626;
+          }
+        }
+        &.sender {
+          justify-content: flex-end;
+          .message {
+            background: #005286;
+            padding-right: 68px;
+            .sender-time {
+              padding-right: 2px;
+            }
+          }
+        }
+      }
+    }
+  }
+  // Footer
+  .footer {
+    position: absolute;
+    bottom: 0;
+    height: 70px;
+    width: 100%;
+    background-color: #040046;
+    display: flex;
+    padding: 0 10px;
+    align-items: center;
+
+    .emoji-btn {
+      height: 100%;
+      width: 100%;
+      padding: 3px;
+      transition: 0.3s;
+
+      .emoji-icon {
+        background: url("../../../assets/icons/face-smile-regular.svg")
+          no-repeat;
+        height: 65%;
+        filter: invert(1);
+        opacity: 0.7;
+        width: 65%;
+      }
+      &.send-btn {
+        .emoji-icon {
+          background: url("../../../assets/icons/send.png") no-repeat;
+          background-size: contain;
+          background-position-x: 65%;
+        }
+      }
+
+      &.Mui-disabled {
+        opacity: 0.5;
+      }
+    }
+
+    .css-1a1fmpi-MuiInputBase-root-MuiInput-root {
+      color: #d9d9d9;
+      font-weight: 600;
+      background-color: #ffffff14;
+      padding: 5px 10px;
+      border-radius: 10px;
+      &::after,
+      &::before {
+        border: none !important;
+      }
+    }
+  }
+  .send-icon {
+    img {
+      width: 100%;
+    }
+  }
+}
+
+.chat-header-name {
+  color: white;
+  text-transform: initial;
+  text-align: left;
+  margin-left: 10px;
+}

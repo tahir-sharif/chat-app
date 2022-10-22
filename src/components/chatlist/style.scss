@@ -1,0 +1,70 @@
+.chat-link {
+  display: inline-block;
+  text-decoration: none;
+  height: 110px;
+  width: 100%;
+  &.active {
+    background: #8080804f;
+    border-radius: 6px;
+  }
+  .chat-item {
+    &.css-1e6y48t-MuiButtonBase-root-MuiButton-root {
+      width: 100%;
+      height: 100%;
+      color: gray;
+      text-transform: none;
+      position: relative;
+      text-align: initial;
+      .chat-item-wrapper {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        .chat-item-left {
+          .chat-item-avatar {
+            width: 58px;
+            height: 58px;
+          }
+        }
+        .chat-item-right {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          padding-left: 15px;
+          width: 100%;
+          height: 62px;
+          .profile-name {
+            color: white;
+            font-size: 25px;
+            font-weight: 600;
+          }
+          .delivereTick,
+          .time {
+            position: absolute;
+            right: 0;
+          }
+          .time {
+            top: 0;
+            color: #d2d2d2;
+          }
+          .delivereTick {
+            bottom: 0;
+            .new-msg {
+              width: 25px;
+              height: 25px;
+              background-color: #009ac4;
+              border-radius: 50%;
+              color: white;
+              display: flex;
+              align-items: center;
+              font-family: sans-serif;
+              font-weight: 600;
+              justify-content: center;
+            }
+          }
+        }
+      }
+    }
+  }
+}

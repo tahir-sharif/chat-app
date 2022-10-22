@@ -1,0 +1,10 @@
+.home-grid-container {
+  height: 100vh;
+  .home-grid {
+    height: 100%;
+    overflow: auto;
+    &.left-section {
+      border-right: solid #ffffff5e 1px;
+    }
+  }
+}

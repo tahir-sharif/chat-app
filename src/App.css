@@ -1,0 +1,27 @@
+@font-face {
+  font-family: "Arima";
+  src: url("./assets/fonts/Arima-Medium.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Arima", comic !important;
+  box-sizing: border-box;
+}
+body {
+  background: #020025;
+  color: white;
+  font-size: 20px;
+}
+.page-center {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.seen {
+  color: #00c9ff;
+}
