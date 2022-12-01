@@ -1,5 +1,5 @@
 import { Avatar, Box, Button, Typography } from "@mui/material";
-import { Done, DoneAll } from "@mui/icons-material";
+import { ChatSharp, Done, DoneAll } from "@mui/icons-material";
 import { formatAMPM } from "../../helperFunctions/timeformatter";
 import { NavLink } from "react-router-dom";
 import "./style.scss";
@@ -8,6 +8,12 @@ import { useSelector } from "react-redux";
 const ChatItem = (props) => {
   const { currentUser } = useSelector((state) => state.auth);
   const { lastMessage } = props.chat;
+
+  if (!props?.chat?.user || props.chat.user === "null") {
+    console.error("chat user is null.");
+    return <></>;
+  }
+
   const { name, profileImage, seen, delivered, newMsg, _id } = props.chat.user;
 
   const isSender = currentUser._id === lastMessage.sender;
