@@ -8,5 +8,5 @@ export const apiUrl = (url = "") => {
     development: _LOCAL_URL,
   };
 
-  return enviromentsURL[process.env.NODE_ENV] || _LOCAL_URL;
+  return enviromentsURL[process.env.NODE_ENV] || _DEPLOYED_URL;
 };
