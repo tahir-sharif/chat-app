@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Done, DoneAll } from "@mui/icons-material";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { formatAMPM } from "../../../helperFunctions/timeformatter";
 
 const Messages = ({ currentUser, conversation, delivered, seen, loading }) => {
@@ -12,10 +12,18 @@ const Messages = ({ currentUser, conversation, delivered, seen, loading }) => {
     }, 100);
   }, [conversation]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      // conversationRef.current.style.scrollBehavior = "smooth";
+    }, 100);
+  }, [loading]);
+
   return (
     <Box className="conversation-wrapper">
       {loading ? (
-        <Box className="page-center">Loading your conversation..</Box>
+        <Box className="page-center">
+          <Typography>Loading your Messages..</Typography>.
+        </Box>
       ) : (
         <Box className="conversation" ref={conversationRef}>
           {conversation.map((message, i) => {

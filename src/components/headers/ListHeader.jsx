@@ -14,10 +14,12 @@ import {
 import cookie from "react-cookies";
 import Logout from "@mui/icons-material/Logout";
 import SearchInput from "../common/Searchinput";
+import { Link, useNavigate } from "react-router-dom";
 
 const ListHeader = (props) => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
+  const { user } = props;
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -26,7 +28,6 @@ const ListHeader = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const { user } = props;
 
   const logoutHandler = () => {
     // waiting for jwt to remove token
@@ -37,16 +38,15 @@ const ListHeader = (props) => {
   };
 
   const openSearchbar = () => {
-    props.setsearchbarOpen(true)
-  }
+    props.setsearchbarOpen(true);
+  };
 
   const closeSearchbar = () => {
-    props.setsearchbarOpen(false)
-  }
+    props.setsearchbarOpen(false);
+  };
 
   return (
     <>
-
       <Box
         sx={{
           display: "flex",
@@ -58,15 +58,28 @@ const ListHeader = (props) => {
           minHeight: "50px",
         }}
       >
-        {props.isSearchbarOpen ?
-          <SearchInput fullWidth placeholder="Search for a user" autoFocus
-          //  onBlur={closeSearchbar}
-            /> :
+        {props.isSearchbarOpen ? (
+          <SearchInput
+            fullWidth
+            placeholder="Search for a user"
+            autoFocus
+            //  onBlur={closeSearchbar}
+          />
+        ) : (
           <>
-
-            <Typography sx={{ minWidth: 100 }}>Chat App</Typography>
+            <Link
+              to="/"
+              style={{
+                color: "white",
+                textDecoration: "none",
+              }}
+            >
+              Chat App
+            </Link>
             <Typography sx={{ minWidth: 100 }}>{user.name}</Typography>
-            <IconButton onClick={openSearchbar} size="small">S</IconButton>
+            <IconButton onClick={openSearchbar} size="small">
+              S
+            </IconButton>
 
             {/* Right Button */}
             <Tooltip title="Account settings">
@@ -125,7 +138,8 @@ const ListHeader = (props) => {
                 Logout
               </MenuItem>
             </Menu>
-          </>}
+          </>
+        )}
       </Box>
     </>
   );
