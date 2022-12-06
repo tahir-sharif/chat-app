@@ -13,8 +13,7 @@ import {
 } from "@mui/material";
 import cookie from "react-cookies";
 import Logout from "@mui/icons-material/Logout";
-import SearchInput from "../common/Searchinput";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const ListHeader = (props) => {
   const dispatch = useDispatch();
@@ -37,14 +36,6 @@ const ListHeader = (props) => {
     }, 500);
   };
 
-  const openSearchbar = () => {
-    props.setsearchbarOpen(true);
-  };
-
-  const closeSearchbar = () => {
-    props.setsearchbarOpen(false);
-  };
-
   return (
     <>
       <Box
@@ -54,92 +45,78 @@ const ListHeader = (props) => {
           justifyContent: "space-between",
           px: 2,
           py: 1,
-          background: "#040046",
           minHeight: "50px",
         }}
+        className="bg-light"
       >
-        {props.isSearchbarOpen ? (
-          <SearchInput
-            fullWidth
-            placeholder="Search for a user"
-            autoFocus
-            //  onBlur={closeSearchbar}
-          />
-        ) : (
-          <>
-            <Link
-              to="/"
-              style={{
-                color: "white",
-                textDecoration: "none",
-              }}
-            >
-              Chat App
-            </Link>
-            <Typography sx={{ minWidth: 100 }}>{user.name}</Typography>
-            <IconButton onClick={openSearchbar} size="small">
-              S
-            </IconButton>
+        <Link
+          to="/"
+          style={{
+            color: "white",
+            textDecoration: "none",
+          }}
+        >
+          Chat App
+        </Link>
+        <Typography sx={{ minWidth: 100 }}>{user.name}</Typography>
 
-            {/* Right Button */}
-            <Tooltip title="Account settings">
-              <IconButton
-                onClick={handleClick}
-                size="small"
-                sx={{ ml: 2 }}
-                aria-controls={open ? "account-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-              >
-                <Avatar sx={{ width: 32, height: 32 }} src={user.profileImage}>
-                  T
-                </Avatar>
-              </IconButton>
-            </Tooltip>
-            <Menu
-              anchorEl={anchorEl}
-              id="account-menu"
-              open={open}
-              onClose={handleClose}
-              onClick={handleClose}
-              PaperProps={{
-                elevation: 0,
-                sx: {
-                  overflow: "visible",
-                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                  mt: 1.5,
-                  "& .MuiAvatar-root": {
-                    width: 32,
-                    height: 32,
-                    ml: -0.5,
-                    mr: 1,
-                  },
-                  "&:before": {
-                    content: '""',
-                    display: "block",
-                    position: "absolute",
-                    top: 0,
-                    right: 14,
-                    width: 10,
-                    height: 10,
-                    bgcolor: "background.paper",
-                    transform: "translateY(-50%) rotate(45deg)",
-                    zIndex: 0,
-                  },
-                },
-              }}
-              transformOrigin={{ horizontal: "right", vertical: "top" }}
-              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-            >
-              <MenuItem onClick={logoutHandler}>
-                <ListItemIcon>
-                  <Logout fontSize="small" />
-                </ListItemIcon>
-                Logout
-              </MenuItem>
-            </Menu>
-          </>
-        )}
+        {/* Right Button */}
+        <Tooltip title="Account settings">
+          <IconButton
+            onClick={handleClick}
+            size="small"
+            sx={{ ml: 2 }}
+            aria-controls={open ? "account-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+          >
+            <Avatar sx={{ width: 32, height: 32 }} src={user.profileImage}>
+              T
+            </Avatar>
+          </IconButton>
+        </Tooltip>
+        <Menu
+          anchorEl={anchorEl}
+          id="account-menu"
+          open={open}
+          onClose={handleClose}
+          onClick={handleClose}
+          PaperProps={{
+            elevation: 0,
+            sx: {
+              overflow: "visible",
+              filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+              mt: 1.5,
+              "& .MuiAvatar-root": {
+                width: 32,
+                height: 32,
+                ml: -0.5,
+                mr: 1,
+              },
+              "&:before": {
+                content: '""',
+                display: "block",
+                position: "absolute",
+                top: 0,
+                right: 14,
+                width: 10,
+                height: 10,
+                bgcolor: "background.paper",
+                transform: "translateY(-50%) rotate(45deg)",
+                zIndex: 0,
+              },
+            },
+          }}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        >
+          <MenuItem onClick={logoutHandler}>
+            <ListItemIcon>
+              <Logout fontSize="small" />
+            </ListItemIcon>
+            Logout
+          </MenuItem>
+        </Menu>
       </Box>
     </>
   );

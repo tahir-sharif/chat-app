@@ -32,6 +32,22 @@ export const getchatuser = createAsyncThunk(
   }
 );
 
+export const getSearchAutocomlete = createAsyncThunk(
+  "getChatAutocomlete",
+  async (searchQry, thunkApi) => {
+    try {
+      const response = await axios.get(
+        apiUrl("/user/autocomplete?q=" + searchQry),
+        getAxiosConfig()
+      );
+      return response.data;
+    } catch (e) {
+      const { error } = e.response.data;
+      return thunkApi.rejectWithValue(error ? error : e);
+    }
+  }
+);
+
 export const sendMessage = createAsyncThunk(
   "sendMessage",
   async ({ id, message }, thunkApi) => {
