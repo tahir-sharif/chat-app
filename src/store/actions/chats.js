@@ -73,7 +73,10 @@ export const getConversation = createAsyncThunk(
         apiUrl("/chats/getconversation/" + id),
         getAxiosConfig()
       );
-      return response.data;
+      return {
+        data: response.data,
+        id,
+      };
     } catch (e) {
       const { error } = e.response.data;
       return thunkApi.rejectWithValue(error ? error : e);

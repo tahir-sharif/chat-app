@@ -6,20 +6,26 @@ import cookie from "react-cookies";
 import { useEffect } from "react";
 import { getMe } from "../store/actions/auth";
 
-const UserAccess = ({ children }) => {
+const UserAccess = ({ children, onLoad = () => {}, onError = () => {} }) => {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const jwt = cookie.load("jwt");
 
   useEffect(() => {
     if (jwt) {
-      dispatch(getMe()).then(() => {
-        setLoading(false);
-      });
+      dispatch(getMe())
+        .then(() => {
+          setLoading(false);
+          onLoad();
+        })
+        .catch((error) => {
+          console.error(error);
+          onError();
+        });
     } else {
       setLoading(false);
     }
-  }, [jwt, dispatch]);
+  }, [jwt, dispatch, onError, onLoad]);
 
   return (
     <Box

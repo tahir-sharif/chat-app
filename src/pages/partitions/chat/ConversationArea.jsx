@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ChatHeader from "../../../components/headers/ChatHeader";
@@ -11,27 +11,37 @@ import Messages from "./Messages";
 import { Box, Typography } from "@mui/material";
 import MessageFooter from "./MessageFooter";
 import "./style.scss";
-import { updateMessageToLocal } from "../../../store/reducers/chats-slice";
+import { updateLocalConversation } from "../../../store/reducers/chats-slice";
 
 const ChatArea = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { messages } = useSelector((state) => state.chats.conversation);
+  const conversations = useSelector((state) => state.chats.conversations);
   const { currentUser } = useSelector((state) => state.auth);
   const { chats } = currentUser;
-  const [loading, setLoading] = useState(true);
-  const [messageLoading, setmessageLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [messageLoading, setmessageLoading] = useState(false);
   const [chatUser, setChatUser] = useState(null);
+  const currentConversation = conversations[id];
+
+  const getUserConversation = useCallback(() => {
+    if (!currentConversation) {
+      setmessageLoading(true);
+      dispatch(getConversation({ id })).then(() => {
+        setmessageLoading(false);
+      });
+    }
+  }, [currentConversation, dispatch, id]);
 
   useEffect(() => {
     // getting chat if it find from local
-    const chatFromLocal = chats.find((chatUser) => chatUser._id === id);
-    if (chatFromLocal && chatFromLocal._id) {
-      setChatUser(chatFromLocal);
+    const chatFromLocal = chats.find((chatUser) => chatUser.user._id === id);
+    if (chatFromLocal && chatFromLocal?.user?._id) {
+      setChatUser(chatFromLocal.user);
       getUserConversation();
-      setLoading(false);
     } else {
       // if not on local then get it from server
+      setLoading(true);
       dispatch(getchatuser({ id })).then((res) => {
         if (res.error) {
           setLoading(false);
@@ -39,18 +49,12 @@ const ChatArea = () => {
         } else {
           const user = res.payload.user;
           setChatUser(user);
-          getUserConversation();
           setLoading(false);
+          getUserConversation();
         }
       });
     }
-  }, [id, dispatch, chats]);
-
-  const getUserConversation = () => {
-    dispatch(getConversation({ id })).then((res) => {
-      setmessageLoading(false);
-    });
-  };
+  }, [id, dispatch, chats, getUserConversation]);
 
   const requestMessage = (message) => {
     const messageObj = {
@@ -61,18 +65,24 @@ const ChatArea = () => {
     dispatch(sendMessage(messageObj));
     // updating message locally
     dispatch(
-      updateMessageToLocal({
-        ...messageObj,
-        sender: currentUser._id,
+      updateLocalConversation({
+        message: {
+          ...messageObj,
+          sender: currentUser._id,
+        },
+        chatId: id,
+        chatUser,
       })
     );
   };
 
   return (
     <Box className="chat-area">
-      {loading ? (
+      {loading || messageLoading ? (
         <Box className="page-center">
-          <Typography>Loading your chat..</Typography>
+          <Typography>
+            {loading ? "Loading your chat.." : "Loading Messages.."}
+          </Typography>
         </Box>
       ) : (
         <>
@@ -81,7 +91,7 @@ const ChatArea = () => {
               <ChatHeader user={chatUser} />
               <Messages
                 currentUser={currentUser}
-                conversation={messages}
+                conversation={currentConversation?.messages || []}
                 loading={messageLoading}
               />
               <MessageFooter onSend={requestMessage} />

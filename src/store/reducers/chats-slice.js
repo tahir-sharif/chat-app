@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { conversation } from "../../temp/conversation";
-import { users } from "../../temp/chatsUsers";
+// import { conversation } from "../../temp/conversation";
+// import { users } from "../../temp/chatsUsers";s
 import { getMe, login, register } from "../actions/auth";
 import { getConversation } from "../actions/chats";
 
@@ -8,9 +8,12 @@ const chat = createSlice({
   name: "chat",
   initialState: {
     chats: [],
-    conversation: {
-      messages: [],
-      user: {},
+    conversations: {
+      // data will file like this
+      id: {
+        messages: [],
+        user: {},
+      },
     },
   },
   extraReducers: (builder) => {
@@ -28,40 +31,47 @@ const chat = createSlice({
 
     builder.addCase(getMe.fulfilled, (state, action) => {
       const { chats } = action.payload.user;
+      console.log(chats);
       state.chats = chats;
     });
 
+    // Getting Messages
     builder.addCase(getConversation.fulfilled, (state, action) => {
-      const { conversation } = action.payload;
-      if (conversation) {
-        state.conversation = {
-          ...conversation,
-        };
-      } else {
-        state.conversation = {
-          messages: [],
-        };
+      const { data, id } = action.payload;
+      if (data.conversation) {
+        state.conversations[id] = data.conversation;
       }
     });
   },
   reducers: {
-    getConversation(state, action) {
-      const indexId = action.payload;
-      state.conversation.messages = conversation[indexId];
-      state.conversation.user = users[indexId];
-    },
-    updateMessageToLocal(state, action) {
-      const messageObj = action.payload;
-      state.conversation.messages.push(messageObj);
+    updateLocalConversation(state, action) {
+      const { message, chatId, chatUser } = action.payload;
 
-      const chat = state.chats.find(
-        (chat) => chat?.user?._id === messageObj.id
+      const chatNavIndex = state.chats.findIndex(
+        (chat) => chat?.user?._id === message.id
       );
-      if (chat) {
-        chat.lastMessage = messageObj;
+      if (chatNavIndex !== -1) {
+        state.chats[chatNavIndex].lastMessage = message;
+        state.chats.unshift(state.chats[chatNavIndex]);
+        state.chats.splice(chatNavIndex + 1, 1);
+      } else {
+        state.chats.unshift({
+          user: chatUser,
+          lastMessage: message,
+        });
+      }
+
+      const localConversation = state.conversations[chatId];
+      if (localConversation) {
+        localConversation.messages.push(message);
+      } else {
+        state.conversations[chatId] = {
+          messages: [message],
+          chatId,
+        };
       }
     },
   },
 });
 export default chat.reducer;
-export const { sendMessage, updateMessageToLocal } = chat.actions;
+export const { updateLocalConversation } = chat.actions;
