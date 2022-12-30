@@ -31,7 +31,6 @@ const chat = createSlice({
 
     builder.addCase(getMe.fulfilled, (state, action) => {
       const { chats } = action.payload.user;
-      console.log(chats);
       state.chats = chats;
     });
 

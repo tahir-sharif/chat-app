@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { IconButton, InputAdornment, TextField } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useState } from 'react';
+import { IconButton, InputAdornment, TextField } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const PasswordInput = (props) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -8,20 +8,26 @@ const PasswordInput = (props) => {
   return (
     <TextField
       fullWidth
-      type={showPassword ? "text" : "password"}
-    //   autoComplete="new-password"
+      type={showPassword ? 'text' : 'password'}
+      //   autoComplete="new-password"
       InputProps={{
         // <-- This is where the toggle button is added.
         endAdornment: (
-          <InputAdornment position="end">
+          <InputAdornment position='end'>
             <IconButton
-              aria-label="toggle password visibility"
+              sx={{
+                color: '#7a7a7a'
+              }}
+              aria-label='toggle password visibility'
               onClick={handleClickShowPassword}
             >
               {showPassword ? <Visibility /> : <VisibilityOff />}
             </IconButton>
           </InputAdornment>
         ),
+        sx: {
+          color: '#fff'
+        }
       }}
       {...props}
     />
