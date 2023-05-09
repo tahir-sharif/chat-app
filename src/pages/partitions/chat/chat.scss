@@ -76,7 +76,7 @@
       transition: 0.3s;
 
       .emoji-icon {
-        background: url("../../../assets/icons/face-smile-regular.svg")
+        background: url('../../../assets/icons/face-smile-regular.svg')
           no-repeat;
         height: 65%;
         filter: invert(1);
@@ -85,7 +85,7 @@
       }
       &.send-btn {
         .emoji-icon {
-          background: url("../../../assets/icons/send.png") no-repeat;
+          background: url('../../../assets/icons/send.png') no-repeat;
           background-size: contain;
           background-position-x: 65%;
         }
@@ -96,7 +96,7 @@
       }
     }
 
-    .css-1a1fmpi-MuiInputBase-root-MuiInput-root {
+    .message-input .MuiInput-root {
       color: #d9d9d9;
       font-weight: 600;
       background-color: #ffffff14;

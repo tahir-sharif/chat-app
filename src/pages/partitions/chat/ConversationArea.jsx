@@ -10,7 +10,7 @@ import {
 import Messages from "./Messages";
 import { Box, Typography } from "@mui/material";
 import MessageFooter from "./MessageFooter";
-import "./style.scss";
+import "./chat.scss";
 import { updateLocalConversation } from "../../../store/reducers/chats-slice";
 
 const ChatArea = () => {
@@ -62,18 +62,20 @@ const ChatArea = () => {
       id,
       createdAt: Date.now(),
     };
-    dispatch(sendMessage(messageObj));
-    // updating message locally
-    dispatch(
-      updateLocalConversation({
-        message: {
-          ...messageObj,
-          sender: currentUser._id,
-        },
-        chatId: id,
-        chatUser,
-      })
-    );
+
+    console.log(messageObj);
+    // dispatch(sendMessage(messageObj));
+    // // updating message locally
+    // dispatch(
+    //   updateLocalConversation({
+    //     message: {
+    //       ...messageObj,
+    //       sender: currentUser._id,
+    //     },
+    //     chatId: id,
+    //     chatUser,
+    //   })
+    // );
   };
 
   return (

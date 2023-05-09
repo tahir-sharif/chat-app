@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { Box, Grid, IconButton, TextField } from "@mui/material";
-import "./style.scss";
+import React, { useState } from 'react';
+import { Box, Grid, IconButton, TextField } from '@mui/material';
+import './chat.scss';
 
 const MessageFooter = (props) => {
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
 
   const sendMessageHandler = () => {
     if (text) {
       props.onSend(text);
-      setText("");
+      setText('');
     }
   };
 
@@ -28,6 +28,9 @@ const MessageFooter = (props) => {
         </Grid>
         <Grid item xs={9} md={10}>
           <TextField
+            classes={{
+              root: 'message-input'
+            }}
             autoFocus={!text}
             fullWidth
             value={text}

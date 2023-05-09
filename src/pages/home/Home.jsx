@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import MainPage from "../partitions/main/MainPage";
 import { Grid } from "@mui/material";
-import "./style.scss";
+import "./home.scss";
 
 const Home = () => {
   const location = useLocation();

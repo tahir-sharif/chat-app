@@ -1,26 +1,27 @@
-import { Avatar, Box, Button, Typography } from "@mui/material";
-import { ChatSharp, Done, DoneAll } from "@mui/icons-material";
-import { formatAMPM } from "../../helperFunctions/timeformatter";
-import { NavLink } from "react-router-dom";
-import "./style.scss";
-import { useSelector } from "react-redux";
+import { Avatar, Box, Button, Typography } from '@mui/material';
+import { Done, DoneAll } from '@mui/icons-material';
+import { formatAMPM } from '../../helperFunctions/timeformatter';
+import { NavLink } from 'react-router-dom';
+import './chatlist.scss';
+import { useSelector } from 'react-redux';
+import StatusTick from '../common/StatusTick';
 
 const ChatItem = (props) => {
   const { currentUser } = useSelector((state) => state.auth);
   const { lastMessage } = props.chat;
 
-  if (!props?.chat?.user || props.chat.user === "null") {
-    console.error("chat user is null.");
+  if (!props?.chat?.user || props.chat.user === 'null') {
+    console.error('chat user is null.');
     return <></>;
   }
 
-  const { name, profileImage, seen, delivered, newMsg, _id } = props.chat.user;
+  const { name, profileImage, status, newMsg, _id } = props.chat.user;
 
   const isSender = currentUser._id === lastMessage.sender;
   return (
     <NavLink
       to={`chat/${_id}`}
-      className={(nav) => `${nav.isActive ? "active" : ""} chat-link`}
+      className={(nav) => `${nav.isActive ? 'active' : ''} chat-link`}
     >
       <Button className="chat-item">
         <Box className="chat-item-wrapper">
@@ -37,11 +38,7 @@ const ChatItem = (props) => {
               {newMsg ? (
                 <Box className="new-msg"></Box>
               ) : isSender ? (
-                delivered || seen ? (
-                  <DoneAll className={seen ? "seen" : ""} />
-                ) : (
-                  <Done />
-                )
+                <StatusTick status={status} />
               ) : (
                 <></>
               )}

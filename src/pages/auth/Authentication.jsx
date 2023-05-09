@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import { Box, Button, CircularProgress, Grow, Typography } from "@mui/material";
-import TextField from "../../components/TextFields/TextField";
-import PasswordInput from "../../components/common/PasswordInput";
-import { useDispatch } from "react-redux";
-import { validators } from "./validators";
+import React, { useState } from 'react';
+import { Box, Button, CircularProgress, Grow, Typography } from '@mui/material';
+import TextField from '../../components/TextFields/TextField';
+import PasswordInput from '../../components/common/PasswordInput';
+import { useDispatch } from 'react-redux';
+import { validators } from './validators';
 import {
   checkIfUserCanRegister,
   login,
-  register,
-} from "../../store/actions/auth";
-import "./style.scss";
-import { useLocation } from "react-router-dom";
+  register
+} from '../../store/actions/auth';
+import { useLocation } from 'react-router-dom';
+import './auth.scss';
 
 const Authentication = () => {
   const dispatch = useDispatch();
@@ -18,10 +18,10 @@ const Authentication = () => {
   const prevHistoryPath = location.state?.navigateTo;
 
   const initialState = {
-    name: "",
-    userName: "",
-    password: "",
-    confirmPassword: "",
+    name: '',
+    userName: '',
+    password: '',
+    confirmPassword: ''
   };
   const [data, setData] = useState(initialState);
   const [loading, setLoading] = useState(false);
@@ -33,31 +33,31 @@ const Authentication = () => {
   const finalRegisterStep = step === 2;
 
   const registerHandler = async () => {
-    setLoading("Creating your account.. ❤ 🔥");
+    setLoading('Creating your account.. ❤ 🔥');
     try {
       await dispatch(
         register({ ...data, navigateTo: prevHistoryPath })
       ).unwrap();
     } catch (e) {
       setError(
-        typeof e == "string"
+        typeof e == 'string'
           ? e
-          : "something went wrong , try Reload your page !"
+          : 'something went wrong , try Reload your page !'
       );
       setLoading(false);
     }
   };
 
   const loginHanlder = async () => {
-    setLoading("Signing in to your account.. ❤");
+    setLoading('Signing in to your account.. ❤');
     try {
       await dispatch(login({ ...data, navigateTo: prevHistoryPath })).unwrap();
     } catch (e) {
       console.log(e);
       setError(
-        typeof e == "string"
+        typeof e == 'string'
           ? e
-          : "something went wrong , try Reload your page !"
+          : 'something went wrong , try Reload your page !'
       );
       setLoading(false);
     }
@@ -99,39 +99,36 @@ const Authentication = () => {
       setError(error);
     } else {
       setLoading(true);
-      dispatch(checkIfUserCanRegister({ userName: data.userName })).then(
-        (res) => {
+      dispatch(checkIfUserCanRegister({ userName: data.userName }))
+        .then((res) => {
           const { canRegister } = res.payload;
           setNewUser(canRegister);
           setLoading(false);
           changeStepHandler();
-        }
-      ).catch((e) => {
-        setError(
-          typeof e == "string"
-            ? e 
-            : "we are sorry , Something went wrong !"
-        );
-        setLoading(false);
-
-      })
+        })
+        .catch((e) => {
+          setError(
+            typeof e == 'string' ? e : 'we are sorry , Something went wrong !'
+          );
+          setLoading(false);
+        });
     }
   };
 
   const onChangeHandler = (e) => {
     let { name, value } = e.target;
-    if (name === "userName") {
+    if (name === 'userName') {
       value = value.toLowerCase();
     }
     setData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value
     }));
     setError(false);
   };
 
   const handleEnter = (e) => {
-    if (e.code === "Enter") {
+    if (e.code === 'Enter') {
       if (step === 0 && !loading) {
         checkifNewUserHandler();
       } else {
@@ -205,7 +202,7 @@ const Authentication = () => {
               onKeyDown={handleEnter}
               error={!!error}
               helperText={error}
-              style={{ marginBottom: "20px" }}
+              style={{ marginBottom: '20px' }}
             />
             <PasswordInput
               fullWidth
@@ -255,9 +252,9 @@ const Authentication = () => {
         {loading ? (
           <Box
             sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: 1,
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: 1
             }}
           >
             <CircularProgress size={30} />
@@ -266,25 +263,25 @@ const Authentication = () => {
         ) : step === 0 ? (
           <Button
             onClick={checkifNewUserHandler}
-            sx={{ justifyContent: "flex-end" }}
+            sx={{ justifyContent: 'flex-end' }}
           >
-            {loading ? <CircularProgress size={30} /> : "Continue"}
+            {loading ? <CircularProgress size={30} /> : 'Continue'}
           </Button>
         ) : (
           <Box
             sx={{
-              display: "flex",
-              justifyContent: "space-between",
+              display: 'flex',
+              justifyContent: 'space-between',
               width: 1,
-              mt: 2,
+              mt: 2
             }}
           >
             <Button onClick={() => changeStepHandler(null, true)}>Back</Button>
             <Button onClick={changeStepHandler}>
               {newUser ? (
-                <>{finalRegisterStep ? "Register" : "Continue"}</>
+                <>{finalRegisterStep ? 'Register' : 'Continue'}</>
               ) : (
-                <>{finalLoginStep ? "Login" : "Continue"}</>
+                <>{finalLoginStep ? 'Login' : 'Continue'}</>
               )}
             </Button>
           </Box>

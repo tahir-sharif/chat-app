@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react";
-import { Done, DoneAll } from "@mui/icons-material";
-import { Box, Typography } from "@mui/material";
-import { formatAMPM } from "../../../helperFunctions/timeformatter";
+import React, { useEffect, useRef } from 'react';
+import { Box } from '@mui/material';
+import { formatAMPM } from '../../../helperFunctions/timeformatter';
+import StatusTick from '../../../components/common/StatusTick';
 
 const Messages = ({ currentUser, conversation, delivered, seen }) => {
   const conversationRef = useRef();
@@ -19,7 +19,7 @@ const Messages = ({ currentUser, conversation, delivered, seen }) => {
           const isSender = message.sender === currentUser._id;
           return (
             <Box
-              className={`message-row ${isSender ? "sender" : "reciever"}`}
+              className={`message-row ${isSender ? 'sender' : 'reciever'}`}
               key={i}
             >
               <Box className="message">
@@ -30,13 +30,7 @@ const Messages = ({ currentUser, conversation, delivered, seen }) => {
                     <span className="sender-time">
                       {formatAMPM(message.createdAt)}
                     </span>
-                    <div className="delivered-status">
-                      {delivered || seen ? (
-                        <DoneAll className={seen ? "seen" : ""} />
-                      ) : (
-                        <Done />
-                      )}
-                    </div>
+                    <StatusTick status={message.status} />
                   </div>
                 ) : (
                   <span className="time">{formatAMPM(message.createdAt)}</span>
