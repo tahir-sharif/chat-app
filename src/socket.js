@@ -6,7 +6,8 @@ export const socket = {
   connect(query) {
     const socket = io.connect(apiUrl(true), {
       query,
-      withCredentials: true
+      withCredentials: true,
+      transports: ['websocket']
     });
     socket.on('connect', this.onConnect);
     this.io = socket;
