@@ -3,12 +3,12 @@ import { Box } from '@mui/material';
 import { formatAMPM } from '../../../helperFunctions/timeformatter';
 import StatusTick from '../../../components/common/StatusTick';
 
-const Messages = ({ currentUser, conversation, delivered, seen }) => {
+const Messages = ({ currentUser, conversation }) => {
   const conversationRef = useRef();
 
   useEffect(() => {
     setTimeout(() => {
-      conversationRef.current.scroll(0, conversationRef.current.scrollHeight);
+      conversationRef.current?.scroll(0, conversationRef.current?.scrollHeight);
     }, 100);
   }, [conversation]);
 
@@ -16,7 +16,7 @@ const Messages = ({ currentUser, conversation, delivered, seen }) => {
     <Box className="conversation-wrapper">
       <Box className="conversation" ref={conversationRef}>
         {conversation.map((message, i) => {
-          const isSender = message.sender === currentUser._id;
+          const isSender = message.senderId === currentUser._id;
           return (
             <Box
               className={`message-row ${isSender ? 'sender' : 'reciever'}`}

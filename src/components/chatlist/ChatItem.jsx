@@ -1,10 +1,9 @@
 import { Avatar, Box, Button, Typography } from '@mui/material';
-import { Done, DoneAll } from '@mui/icons-material';
 import { formatAMPM } from '../../helperFunctions/timeformatter';
 import { NavLink } from 'react-router-dom';
-import './chatlist.scss';
 import { useSelector } from 'react-redux';
 import StatusTick from '../common/StatusTick';
+import './chatlist.scss';
 
 const ChatItem = (props) => {
   const { currentUser } = useSelector((state) => state.auth);
@@ -15,9 +14,9 @@ const ChatItem = (props) => {
     return <></>;
   }
 
-  const { name, profileImage, status, newMsg, _id } = props.chat.user;
+  const { name, profileImage, newMsg, _id } = props.chat.user;
 
-  const isSender = currentUser._id === lastMessage.sender;
+  const isSender = currentUser._id === lastMessage.senderId;
   return (
     <NavLink
       to={`chat/${_id}`}
@@ -38,7 +37,7 @@ const ChatItem = (props) => {
               {newMsg ? (
                 <Box className="new-msg"></Box>
               ) : isSender ? (
-                <StatusTick status={status} />
+                <StatusTick status={lastMessage.status} />
               ) : (
                 <></>
               )}

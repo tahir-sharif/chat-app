@@ -7,17 +7,16 @@ export const socket = {
     const socket = io.connect(apiUrl(true), {
       query
     });
-    console.log(socket.on('connect', this.onConnect));
+    socket.on('connect', this.onConnect);
     this.io = socket;
   },
   disconnect() {
     this.io?.disconnect();
+    console.log('disconnected');
     this.io = null;
   },
-  sendMessage(payload) {
-    this.io.emit('send-message', payload, (ack) => {
-      console.log('message sent', ack);
-    });
+  sendMessage(payload, cb = () => {}) {
+    this.io.emit('send-message', payload, cb);
   },
   onReceiveMessage(fn = () => {}) {
     this.io.on('receive-message', fn);

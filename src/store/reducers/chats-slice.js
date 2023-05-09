@@ -1,20 +1,20 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 // import { conversation } from "../../temp/conversation";
 // import { users } from "../../temp/chatsUsers";s
-import { getMe, login, register } from "../actions/auth";
-import { getConversation } from "../actions/chats";
+import { getMe, login, register } from '../actions/auth';
+import { getConversation } from '../actions/chats';
 
 const chat = createSlice({
-  name: "chat",
+  name: 'chat',
   initialState: {
     chats: [],
     conversations: {
       // data will file like this
       id: {
         messages: [],
-        user: {},
-      },
-    },
+        user: {}
+      }
+    }
   },
   extraReducers: (builder) => {
     // Getting chats list for main view from the following fullfills
@@ -43,11 +43,11 @@ const chat = createSlice({
     });
   },
   reducers: {
-    updateLocalConversation(state, action) {
+    updateLocalConversation(state, action, isReceiving) {
       const { message, chatId, chatUser } = action.payload;
 
-      const chatNavIndex = state.chats.findIndex(
-        (chat) => chat?.user?._id === message.id
+      const chatNavIndex = state.chats.findIndex((chat) =>
+        chat?.user?._id === isReceiving ? message.senderId : message.receiverId
       );
       if (chatNavIndex !== -1) {
         state.chats[chatNavIndex].lastMessage = message;
@@ -56,7 +56,7 @@ const chat = createSlice({
       } else {
         state.chats.unshift({
           user: chatUser,
-          lastMessage: message,
+          lastMessage: message
         });
       }
 
@@ -66,11 +66,11 @@ const chat = createSlice({
       } else {
         state.conversations[chatId] = {
           messages: [message],
-          chatId,
+          chatId
         };
       }
-    },
-  },
+    }
+  }
 });
 export default chat.reducer;
 export const { updateLocalConversation } = chat.actions;

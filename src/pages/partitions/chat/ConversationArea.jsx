@@ -1,17 +1,19 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import ChatHeader from "../../../components/headers/ChatHeader";
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import ChatHeader from '../../../components/headers/ChatHeader';
 import {
   getchatuser,
   getConversation,
-  sendMessage,
-} from "../../../store/actions/chats";
-import Messages from "./Messages";
-import { Box, Typography } from "@mui/material";
-import MessageFooter from "./MessageFooter";
-import "./chat.scss";
-import { updateLocalConversation } from "../../../store/reducers/chats-slice";
+  sendMessage
+} from '../../../store/actions/chats';
+import Messages from './Messages';
+import { Box, Typography } from '@mui/material';
+import MessageFooter from './MessageFooter';
+import './chat.scss';
+import { updateLocalConversation } from '../../../store/reducers/chats-slice';
+import { socket } from '../../../socket';
+import { playNotification } from '../../../helperFunctions/playnotification';
 
 const ChatArea = () => {
   const { id } = useParams();
@@ -60,30 +62,41 @@ const ChatArea = () => {
     const messageObj = {
       message,
       id,
-      createdAt: Date.now(),
+      createdAt: Date.now()
     };
 
-    console.log(messageObj);
-    // dispatch(sendMessage(messageObj));
-    // // updating message locally
-    // dispatch(
-    //   updateLocalConversation({
-    //     message: {
-    //       ...messageObj,
-    //       sender: currentUser._id,
-    //     },
-    //     chatId: id,
-    //     chatUser,
-    //   })
-    // );
+    socket.sendMessage(messageObj, (message) => {
+      dispatch(
+        updateLocalConversation({
+          message,
+          chatId: id,
+          chatUser
+        })
+      );
+    });
   };
+
+  useEffect(() => {
+    if (chatUser !== null) {
+      socket.onReceiveMessage((message) => {
+        dispatch(
+          updateLocalConversation({
+            message,
+            chatId: id,
+            chatUser
+          })
+        );
+        playNotification('receive-message');
+      });
+    }
+  }, [dispatch, id, chatUser]);
 
   return (
     <Box className="chat-area">
       {loading || messageLoading ? (
         <Box className="page-center">
           <Typography>
-            {loading ? "Loading your chat.." : "Loading Messages.."}
+            {loading ? 'Loading your chat..' : 'Loading Messages..'}
           </Typography>
         </Box>
       ) : (
@@ -100,7 +113,7 @@ const ChatArea = () => {
             </>
           ) : (
             <Box className="page-center">
-              <Typography sx={{ color: "#ff6868" }}>
+              <Typography sx={{ color: '#ff6868' }}>
                 Sorry no chat user were found !
               </Typography>
             </Box>

@@ -1,21 +1,25 @@
-import { createSlice } from "@reduxjs/toolkit";
-import cookie from "react-cookies";
-import { register, login, getMe } from "../actions/auth";
+import { createSlice } from '@reduxjs/toolkit';
+import cookie from 'react-cookies';
+import { register, login, getMe } from '../actions/auth';
+import { socket } from '../../socket';
 
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState: {
-    isLoggedIn: cookie.load("jwt") !== undefined,
+    isLoggedIn: cookie.load('jwt') !== undefined,
     currentUser: null,
-    prevHistoryState: null,
+    prevHistoryState: null
   },
   extraReducers: (builder) => {
     builder.addCase(register.fulfilled, (state, action) => {
       const { data, navigateTo } = action.payload;
       const { user, token } = data;
       state.currentUser = user;
-      cookie.save("jwt", token, {
-        path: "/",
+      cookie.save('jwt', token, {
+        path: '/'
+      });
+      socket.connect({
+        token: `Bearer ${token}`
       });
       state.prevHistoryState = navigateTo;
       state.isLoggedIn = true;
@@ -24,8 +28,11 @@ const authSlice = createSlice({
       const { data, navigateTo } = action.payload;
       const { user, token } = data;
       state.currentUser = user;
-      cookie.save("jwt", token, {
-        path: "/",
+      cookie.save('jwt', token, {
+        path: '/'
+      });
+      socket.connect({
+        token: `Bearer ${token}`
       });
       state.prevHistoryState = navigateTo;
       state.isLoggedIn = true;
@@ -38,7 +45,8 @@ const authSlice = createSlice({
       state.isLoggedIn = true;
     });
     builder.addCase(getMe.rejected, (state) => {
-      cookie.remove("jwt");
+      socket.disconnect();
+      cookie.remove('jwt');
       state.currentUser = null;
       state.chats = [];
       state.isLoggedIn = false;
@@ -46,11 +54,12 @@ const authSlice = createSlice({
   },
   reducers: {
     logout: (state) => {
-      cookie.remove("jwt");
+      cookie.remove('jwt');
+      socket.disconnect();
       state.currentUser = null;
       state.isLoggedIn = false;
-    },
-  },
+    }
+  }
 });
 export default authSlice.reducer;
 export const { logout } = authSlice.actions;
