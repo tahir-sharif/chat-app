@@ -5,7 +5,8 @@ export const socket = {
   io: null,
   connect(query) {
     const socket = io.connect(apiUrl(true), {
-      query
+      query,
+      withCredentials: true
     });
     socket.on('connect', this.onConnect);
     this.io = socket;
